@@ -5,5 +5,5 @@
     'files': \.(css|scss|sass)$
     args: []
     require_serial: false
-    additional_dependencies: ["stylelint@7.4.1"]
+    additional_dependencies: ["stylelint@7.4.2"]
     minimum_pre_commit_version: '0'

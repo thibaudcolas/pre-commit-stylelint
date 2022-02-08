@@ -1,0 +1,10 @@
+contact_links:
+  - name: Questions about pre-commit
+    url: https://pre-commit.com/#getting-help
+    about: Check out pre-commit’s support channels.
+  - name: Questions about Stylelint
+    url: https://github.com/stylelint/stylelint/blob/main/SUPPORT.md
+    about: Check out stylelint’s support channels.
+  - name: Questions about this hook
+    url: https://github.com/thibaudcolas/pre-commit-stylelint/discussions
+    about: Use GitHub Discussions to get help with this hook.

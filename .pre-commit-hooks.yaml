@@ -1,0 +1,9 @@
+-   id: stylelint
+    name: stylelint
+    entry: stylelint
+    language: node
+    'files': \.(css|scss|sass)$
+    args: []
+    require_serial: false
+    additional_dependencies: ["stylelint@0.0.0"]
+    minimum_pre_commit_version: '0'

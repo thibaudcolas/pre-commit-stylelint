@@ -1,6 +1,6 @@
 # Stylelint mirror for pre-commit
 
-Mirrors all [Stylelint](https://stylelint.io/) releases for the [pre-commit](https://pre-commit.com/) hooks framework.
+Mirrors all* [Stylelint](https://stylelint.io/) releases for the [pre-commit](https://pre-commit.com/) hooks framework.
 
 ## Usage
 
@@ -13,7 +13,7 @@ Add the following to your `.pre-commit-config.yaml`:
     - id: stylelint
 ```
 
-Change [rev](https://pre-commit.com/#repos-rev) to the stylelint version you want to use. See all [available versions as tags](https://github.com/thibaudcolas/pre-commit-stylelint/tags).
+Change [rev](https://pre-commit.com/#repos-rev) to the stylelint version you want to use from the [available versions as tags](https://github.com/thibaudcolas/pre-commit-stylelint/tags).
 
 ### With additional dependencies
 
@@ -83,7 +83,25 @@ Switching is just a matter of updating the `repo`, and setting a `rev` for the d
     - id: stylelint
 ```
 
+### With an unavailable stylelint versions
+
+\* some versions of stylelint may be missing, though this isn’t the case as of June 2023. This repository doesn’t automatically mirror patch releases to older versions of Stylelint, when they get released after another version with a "bigger" version number. If this happens, please [open an issue](https://github.com/thibaudcolas/pre-commit-stylelint/issues/new) so we manually add the release to the mirror. 
+
+As a temporary workaround, you can configure pre-commit to install from any arbitrary version of stylelint with [`additional_dependencies`](https://pre-commit.com/#config-additional_dependencies):
+
+```yaml
+- repo: https://github.com/thibaudcolas/pre-commit-stylelint
+  rev: v14.4.0
+  hooks:
+    - id: stylelint
+      additional_dependencies:
+        # v14.16.43 isn’t available as a tag, so we instead load it directly from npm:
+        - stylelint@14.16.43
+```
+
 ## Why this mirror exists
+
+pre-commit itself has poor support for the Node ecosystem, preferring to install projects with git rather than using packages as published. Setting up a mirror completely sidesteps those issues, and results in [much faster installation times](https://github.com/thibaudcolas/pre-commit-stylelint/discussions/1).
 
 See:
 

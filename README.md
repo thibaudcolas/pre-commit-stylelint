@@ -85,7 +85,7 @@ Switching is just a matter of updating the `repo`, and setting a `rev` for the d
 
 ### With an unavailable stylelint versions
 
-\* some versions of stylelint may be missing, though this isn’t the case as of June 2023. This repository doesn’t automatically mirror patch releases to older versions of Stylelint, when they get released after another version with a "bigger" version number. If this happens, please [open an issue](https://github.com/thibaudcolas/pre-commit-stylelint/issues/new) so we manually add the release to the mirror. 
+\* some versions of stylelint may be missing, though this isn’t the case as of June 2024 (v16.6.1 and below). This repository doesn’t automatically mirror patch releases to older versions of Stylelint, when they get released after another version with a "bigger" version number. If this happens, please [open an issue](https://github.com/thibaudcolas/pre-commit-stylelint/issues/new) so we manually add the release to the mirror. 
 
 As a temporary workaround, you can configure pre-commit to install from any arbitrary version of stylelint with [`additional_dependencies`](https://pre-commit.com/#config-additional_dependencies):
 

@@ -43,6 +43,49 @@ To use plugins or shared configurations with `stylelint`, declare them (and styl
         - "@scope/my-awesome-plugin@0.12.0"
 ```
 
+#### Stylelint 17 and later
+
+From v17, Stylelint can’t find packages from `additional_dependencies` when your config refers to them by name in `extends`, `plugins` or `customSyntax`. Every file fails with:
+
+```
+ConfigurationError: Could not find "stylelint-config-standard-scss". Do you need to install the package or use the "configBasedir" option?
+```
+
+pre-commit and prek install `additional_dependencies` into the hook’s own environment and put its `node_modules` folder on `NODE_PATH`. Stylelint 16 searched `NODE_PATH` as a fallback, but Stylelint 17 dropped that fallback ([stylelint/stylelint#8886](https://github.com/stylelint/stylelint/pull/8886)) and only looks in `node_modules` folders above your config file.
+
+You can work around this with a JavaScript config that resolves the package paths itself, since Node’s `require.resolve` still reads `NODE_PATH`:
+
+```js
+// stylelint.config.mjs
+import fs from "node:fs";
+import { createRequire } from "node:module";
+import path from "node:path";
+
+const require = createRequire(import.meta.url);
+
+function resolve(name) {
+  try {
+    return require.resolve(name);
+  } catch {
+    // ESM-only packages such as stylelint-config-standard-scss can't be
+    // resolved by require, so pass their directory and let Stylelint load
+    // index.js from it.
+    return (
+      require.resolve
+        .paths(name)
+        ?.map((dir) => path.join(dir, name))
+        .find((dir) => fs.existsSync(dir)) ?? name
+    );
+  }
+}
+
+export default {
+  extends: [resolve("stylelint-config-standard-scss")],
+};
+```
+
+This still uses your project’s `node_modules` first when the packages are installed there, so running `npx stylelint` and editor integrations keep working. It won’t find an ESM-only package whose entry point is somewhere other than `index.js` at the package root.
+
 ### With additional stylelint options
 
 Use pre-commit’s [`args`](https://pre-commit.com/#config-args):

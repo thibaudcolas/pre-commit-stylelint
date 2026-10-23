@@ -68,13 +68,12 @@ function resolve(name) {
     return require.resolve(name);
   } catch {
     // ESM-only packages such as stylelint-config-standard-scss can't be
-    // resolved by require, so pass their directory and let Stylelint load
-    // index.js from it.
+    // resolved by require, so point Stylelint at their index.js instead.
     return (
       require.resolve
         .paths(name)
-        ?.map((dir) => path.join(dir, name))
-        .find((dir) => fs.existsSync(dir)) ?? name
+        ?.map((dir) => path.join(dir, name, "index.js"))
+        .find((file) => fs.existsSync(file)) ?? name
     );
   }
 }
